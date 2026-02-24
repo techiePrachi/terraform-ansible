@@ -26,13 +26,42 @@ jobs:
 
       - name: terraform init
         run: terraform init
+        working-directory: ./terraform
 
       - name: terraform validate
         run: terraform validate
+        working-directory: ./terraform
 
       - name: terraform plan
         run: terraform plan
+        working-directory: ./terraform
 
       - name: terraform apply
         if: github.ref == 'refs/heads/main'
         run: terraform apply -auto-approve
+        working-directory: ./terraform
+
+      - name: Wait for EC2 to be ready
+        if: github.ref == 'refs/heads/main'
+        run: sleep 40
+     
+      - name: Install Ansible
+        if: github.ref == 'refs/heads/main'
+        run: |
+          sudo apt update
+          sudo apt install ansible -y
+
+      - name: Install AWS Collection
+        if: github.ref == 'refs/heads/main'
+        run: ansible-galaxy collection install amazon.aws
+
+      - name: Create SSH key
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ansible/key.pem
+          chmod 600 ansible/key.pem
+
+      - name: Run Ansible Playbook
+        if: github.ref == 'refs/heads/main'
+        run: ansible-playbook -i aws_ec2.yml playbook.yml
+        working-directory: ./ansible

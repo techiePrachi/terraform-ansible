@@ -1,0 +1,8 @@
+---
+- name: Install and start nginx
+  hosts: tag_Role_web
+  become: yes
+
+  roles:
+    - common
+    - nginx

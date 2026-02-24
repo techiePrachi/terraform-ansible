@@ -1,0 +1,7 @@
+plugin: amazon.aws.aws_ec2
+regions:
+  - ap-south-1
+filters:
+  tag:Project: ansible-inventory
+keyed_groups:
+  - key: tags.Role

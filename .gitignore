@@ -8,3 +8,5 @@
 
 # OS files
 .DS_Store
+crash.log
+ansible/key.pem

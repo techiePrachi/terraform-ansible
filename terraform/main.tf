@@ -42,7 +42,7 @@ resource "aws_security_group" "web_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["183.83.53.239/32"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
@@ -82,15 +82,26 @@ resource "aws_route_table_association" "public_assoc" {
   route_table_id = aws_route_table.public_rt.id
 }
 
-
-resource "aws_instance" "web"{
-    ami = var.ami
-    instance_type = "t2.micro"
-    subnet_id = aws_subnet.this.id
-    tags = {
-        Name = "terraform-cicd-demo"
-    }
-    vpc_security_group_ids = [aws_security_group.web_sg.id]
-    associate_public_ip_address = true
+resource "aws_key_pair" "cicd_key" {
+  key_name   = "cicd-key"
+  public_key = file("${path.module}/id_rsa.pub")
 }
+
+
+resource "aws_instance" "web" {
+  ami                         = var.ami
+  instance_type               = "t3.micro"
+  subnet_id                   = aws_subnet.this.id
+  vpc_security_group_ids      = [aws_security_group.web_sg.id]
+  associate_public_ip_address = true
+  key_name = aws_key_pair.cicd_key.key_name
+
+  tags = {
+    Name = "ansible-dynamic-inventory"
+    Project = "ansible-inventory"
+  Role    = "web"
+  }
+}
+
+
 
