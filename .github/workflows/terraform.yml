@@ -49,16 +49,14 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           sudo apt update
-          sudo apt install ansible -y
+          sudo apt remove ansible -y || true
+          sudo apt install python3-pip -y
+          pip3 install --upgrade pip
+          pip3 install ansible boto3 botocore
 
       - name: Install AWS Collection
         if: github.ref == 'refs/heads/main'
         run: ansible-galaxy collection install amazon.aws
-
-      - name: Install Python dependencies for AWS
-        if: github.ref == 'refs/heads/main'
-        run: |
-          python3 -m pip install boto3 botocore
 
       - name: Create SSH key
         if: github.ref == 'refs/heads/main'
