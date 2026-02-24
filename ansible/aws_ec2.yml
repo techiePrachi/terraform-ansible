@@ -1,9 +1,15 @@
 plugin: amazon.aws.aws_ec2
 regions:
   - ap-south-1
+
 filters:
   tag:Project: ansible-inventory
+
 hostnames:
   - public-ip-address
+
+compose:
+  ansible_host: public_ip_address
+
 keyed_groups:
   - key: tags.Role
