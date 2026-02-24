@@ -3,5 +3,7 @@ regions:
   - ap-south-1
 filters:
   tag:Project: ansible-inventory
+hostnames:
+  - public-ip-address
 keyed_groups:
   - key: tags.Role
