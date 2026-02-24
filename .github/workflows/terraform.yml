@@ -55,6 +55,11 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: ansible-galaxy collection install amazon.aws
 
+      - name: Install Python dependencies for AWS
+        if: github.ref == 'refs/heads/main'
+        run: |
+          python3 -m pip install boto3 botocore
+
       - name: Create SSH key
         if: github.ref == 'refs/heads/main'
         run: |
