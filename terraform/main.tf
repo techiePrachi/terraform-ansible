@@ -99,7 +99,7 @@ resource "aws_instance" "web" {
   tags = {
     Name = "ansible-dynamic-inventory"
     Project = "ansible-inventory"
-  Role    = "web"
+    Role    = "web"
   }
 }
 

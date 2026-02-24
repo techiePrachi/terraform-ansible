@@ -65,7 +65,9 @@ jobs:
 
       - name: Debug dynamic inventory
         if: github.ref == 'refs/heads/main'
-        run: ansible-inventory -i aws_ec2.yml --graph
+        run: |
+          ansible-inventory -i aws_ec2.yml --graph
+          ansible-inventory --list
         working-directory: ./ansible
 
       - name: Run Ansible Playbook
