@@ -74,3 +74,6 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: ansible-playbook -i aws_ec2.yml playbook.yml
         working-directory: ./ansible
+
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve
